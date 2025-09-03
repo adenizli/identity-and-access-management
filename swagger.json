@@ -1,0 +1,872 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/iam/identity": {
+      "post": {
+        "description": "Creates a new user in the system with the provided information including contact details, roles, and permissions.",
+        "operationId": "IdentityController_createUser",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "User creation data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User has been successfully created."
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data."
+          },
+          "409": {
+            "description": "Conflict - User with this email already exists."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Create a new administrator user",
+        "tags": [
+          "Identity Management"
+        ]
+      }
+    },
+    "/iam/identity/admin": {
+      "get": {
+        "operationId": "IdentityController_listAdministrators",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Administrators have been successfully retrieved."
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data."
+          },
+          "401": {
+            "description": "Unauthorized - Invalid credentials."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "List administrators",
+        "tags": [
+          "Identity Management"
+        ]
+      }
+    },
+    "/iam/identity/{id}": {
+      "get": {
+        "description": "Retrieves a user by their unique identifier.",
+        "operationId": "IdentityController_getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users have been successfully retrieved."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Get a user by id",
+        "tags": [
+          "Identity Management"
+        ]
+      },
+      "patch": {
+        "description": "Updates a user by their unique identifier.",
+        "operationId": "IdentityController_updateUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User has been successfully updated."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Update a user by id",
+        "tags": [
+          "Identity Management"
+        ]
+      }
+    },
+    "/iam/authentication/signIn": {
+      "post": {
+        "operationId": "AuthenticationController_signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "User sign in data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationCredentialsModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Sign in a user and set authentication cookies",
+        "tags": [
+          "Authentication",
+          "Authentication"
+        ]
+      }
+    },
+    "/iam/authentication/refresh": {
+      "post": {
+        "operationId": "AuthenticationController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Refresh session data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshSessionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication cookies refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationCredentialsModel"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Refresh authentication cookies",
+        "tags": [
+          "Authentication",
+          "Authentication"
+        ]
+      }
+    },
+    "/iam/authentication/signOut": {
+      "post": {
+        "operationId": "AuthenticationController_signOut",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "User successfully signed out"
+          }
+        },
+        "summary": "Sign out a user and invalidate session",
+        "tags": [
+          "Authentication",
+          "Authentication"
+        ]
+      }
+    },
+    "/iam/authorization/roles": {
+      "post": {
+        "description": "Creates a new role in the system with the provided information including permissions.",
+        "operationId": "AuthorizationController_createRole",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Role creation data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Role has been successfully created."
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data."
+          },
+          "409": {
+            "description": "Conflict - Role with this title already exists."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Create a new role",
+        "tags": [
+          "Authorization Management"
+        ]
+      },
+      "get": {
+        "operationId": "AuthorizationController_listRoles",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Roles have been successfully retrieved."
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data."
+          },
+          "401": {
+            "description": "Unauthorized - Invalid credentials."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "List roles",
+        "tags": [
+          "Authorization Management"
+        ]
+      }
+    },
+    "/iam/authorization/roles/{id}": {
+      "get": {
+        "operationId": "AuthorizationController_getRoleById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role has been successfully retrieved."
+          },
+          "404": {
+            "description": "Role not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Get a role by id",
+        "tags": [
+          "Authorization Management"
+        ]
+      },
+      "patch": {
+        "operationId": "AuthorizationController_updateRoleById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Role has been successfully updated."
+          },
+          "404": {
+            "description": "Role not found."
+          },
+          "409": {
+            "description": "Conflict - Role title already exists."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Update a role by id",
+        "tags": [
+          "Authorization Management"
+        ]
+      },
+      "delete": {
+        "operationId": "AuthorizationController_deleteRoleById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Role has been successfully deleted."
+          },
+          "404": {
+            "description": "Role not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Delete a role by id",
+        "tags": [
+          "Authorization Management"
+        ]
+      }
+    },
+    "/iam/authorization/permissions": {
+      "get": {
+        "operationId": "AuthorizationController_getPermissionGroups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Permissions have been successfully retrieved."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Get all permission groups",
+        "tags": [
+          "Authorization Management"
+        ]
+      }
+    },
+    "/iam/authorization/permissions/{permissionGroup}": {
+      "get": {
+        "operationId": "AuthorizationController_getPermissions",
+        "parameters": [
+          {
+            "name": "permissionGroup",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Permissions have been successfully retrieved."
+          },
+          "404": {
+            "description": "Permission group not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        },
+        "summary": "Get permissions by group",
+        "tags": [
+          "Authorization Management"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Support Service API",
+    "description": "The Support Service API documentation",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "support-service",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "EmailDto": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Email address of the user",
+            "example": "john.doe@example.com",
+            "format": "email"
+          }
+        },
+        "required": [
+          "address"
+        ]
+      },
+      "PhoneDto": {
+        "type": "object",
+        "properties": {
+          "dialCode": {
+            "type": "string",
+            "description": "Country dial code",
+            "example": "+1",
+            "pattern": "^\\+[1-9]\\d{0,3}$"
+          },
+          "number": {
+            "type": "string",
+            "description": "Phone number without country code",
+            "example": "5551234567",
+            "pattern": "^[0-9]{7,15}$"
+          }
+        },
+        "required": [
+          "dialCode",
+          "number"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "First name of the user",
+            "example": "John",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the user",
+            "example": "Doe",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "username": {
+            "type": "string",
+            "description": "Username of the user",
+            "example": "john.doe",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "email": {
+            "description": "Email address of the user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailDto"
+              }
+            ]
+          },
+          "phone": {
+            "description": "Phone information of the user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhoneDto"
+              }
+            ]
+          },
+          "roles": {
+            "description": "List of roles assigned to the user",
+            "example": [
+              "admin",
+              "user-manager",
+              "support"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "teams": {
+            "description": "List of teams the user belongs to",
+            "example": [
+              "support",
+              "development",
+              "qa"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "includedPermissions": {
+            "description": "List of additional permissions specifically granted to the user",
+            "example": [
+              "user.create",
+              "user.read",
+              "user.update",
+              "report.generate"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "excludedPermissions": {
+            "description": "List of permissions specifically denied to the user (overrides role permissions)",
+            "example": [
+              "user.delete",
+              "system.admin"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "includedScopes": {
+            "description": "List of access scopes granted to the user",
+            "example": [
+              "admin",
+              "user-management",
+              "reporting"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          },
+          "excludedScopes": {
+            "description": "List of access scopes denied to the user",
+            "example": [
+              "billing",
+              "system-configuration"
+            ],
+            "items": {
+              "type": "array"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "username",
+          "email",
+          "phone"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user",
+            "example": "John"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user",
+            "example": "Doe"
+          },
+          "email": {
+            "description": "Email information of the user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailDto"
+              }
+            ]
+          },
+          "phone": {
+            "description": "Phone information of the user",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PhoneDto"
+              }
+            ]
+          },
+          "roles": {
+            "description": "The roles of the user",
+            "example": [
+              "admin",
+              "user"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "teams": {
+            "description": "The teams of the user",
+            "example": [
+              "team1",
+              "team2"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "includedPermissions": {
+            "description": "The included permissions of the user",
+            "example": [
+              "permission1",
+              "permission2"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludedPermissions": {
+            "description": "The excluded permissions of the user",
+            "example": [
+              "permission3",
+              "permission4"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "includedScopes": {
+            "description": "The included scopes of the user",
+            "example": [
+              "scope1",
+              "scope2"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "excludedScopes": {
+            "description": "The excluded scopes of the user",
+            "example": [
+              "scope3",
+              "scope4"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "roles",
+          "teams",
+          "includedPermissions"
+        ]
+      },
+      "SignInDto": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "description": "Identifier of the user",
+            "example": "john.doe@example.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password for authentication",
+            "example": "SecurePassword123!"
+          },
+          "platform": {
+            "type": "string",
+            "description": "Platform of the client",
+            "example": "web",
+            "enum": [
+              "web",
+              "mobile",
+              "desktop"
+            ]
+          }
+        },
+        "required": [
+          "identifier",
+          "password",
+          "platform"
+        ]
+      },
+      "AuthenticationCredentialsModel": {
+        "type": "object",
+        "properties": {}
+      },
+      "RefreshSessionDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "The access token"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "The refresh token"
+          },
+          "sessionId": {
+            "type": "string",
+            "description": "The session ID"
+          }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "sessionId"
+        ]
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the role",
+            "example": "Admin",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "color": {
+            "type": "string",
+            "description": "Color code for the role",
+            "example": "#FF5733"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the role",
+            "example": "Full system administrator with all permissions",
+            "maxLength": 255
+          },
+          "includedPermissions": {
+            "type": "array",
+            "description": "List of permissions included in this role",
+            "example": [
+              "CREATE_ROLE",
+              "UPDATE_ROLE",
+              "GET_ROLE",
+              "LIST_ROLES"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "CREATE_ROLE",
+                "UPDATE_ROLE",
+                "DELETE_ROLE",
+                "GET_ROLE",
+                "LIST_ROLES"
+              ]
+            }
+          },
+          "excludedPermissions": {
+            "type": "array",
+            "description": "List of permissions specifically excluded from this role",
+            "example": [
+              "DELETE_ROLE"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "CREATE_ROLE",
+                "UPDATE_ROLE",
+                "DELETE_ROLE",
+                "GET_ROLE",
+                "LIST_ROLES"
+              ]
+            }
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
+      "UpdateRoleDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the role",
+            "example": "Senior Admin",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "color": {
+            "type": "string",
+            "description": "Color code for the role",
+            "example": "#FF5733"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the role",
+            "example": "Updated role description",
+            "maxLength": 255
+          },
+          "includedPermissions": {
+            "type": "array",
+            "description": "List of permissions included in this role",
+            "example": [
+              "CREATE_ROLE",
+              "UPDATE_ROLE",
+              "GET_ROLE"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "CREATE_ROLE",
+                "UPDATE_ROLE",
+                "DELETE_ROLE",
+                "GET_ROLE",
+                "LIST_ROLES"
+              ]
+            }
+          },
+          "excludedPermissions": {
+            "type": "array",
+            "description": "List of permissions specifically excluded from this role",
+            "example": [
+              "DELETE_ROLE"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "CREATE_ROLE",
+                "UPDATE_ROLE",
+                "DELETE_ROLE",
+                "GET_ROLE",
+                "LIST_ROLES"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

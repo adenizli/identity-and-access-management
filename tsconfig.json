@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": false,
+    "typeRoots": ["./node_modules/@types", "./src/common/types"],
+    "baseUrl": "./src",
+    "paths": {
+      "@common/*": ["./common/*"],
+      "@modules/*": ["./modules/*"],
+      "@services/*": ["./services/*"],
+      "@/*": ["./src/*"]
+    }
+  }
+}
