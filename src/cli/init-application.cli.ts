@@ -147,6 +147,7 @@ export class InitApplicationCommand extends CommandRunner {
       dialCode: basicInfo.phoneDialCode,
       number: basicInfo.phoneNumber,
     };
+    createUserModel.administratorAccess = true;
 
     try {
       const user = await this.identityService.createUser(createUserModel);
